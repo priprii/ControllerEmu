@@ -31,7 +31,6 @@
             this.TrayCMenuConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.TrayCMenuSetToggleKey = new System.Windows.Forms.ToolStripMenuItem();
             this.TrayCMenuConnectOnStart = new System.Windows.Forms.ToolStripMenuItem();
-            this.TrayCMenuEnableOnStart = new System.Windows.Forms.ToolStripMenuItem();
             this.TrayCMenuPlayEnabledAudio = new System.Windows.Forms.ToolStripMenuItem();
             this.TrayCMenuPlayDisabledAudio = new System.Windows.Forms.ToolStripMenuItem();
             this.TrayCMenuReloadConfig = new System.Windows.Forms.ToolStripMenuItem();
@@ -74,7 +73,6 @@
             this.TrayCMenuConfig.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.TrayCMenuSetToggleKey,
             this.TrayCMenuConnectOnStart,
-            this.TrayCMenuEnableOnStart,
             this.TrayCMenuPlayEnabledAudio,
             this.TrayCMenuPlayDisabledAudio});
             this.TrayCMenuConfig.Name = "TrayCMenuConfig";
@@ -98,14 +96,6 @@
             this.TrayCMenuConnectOnStart.ToolTipText = "Connect the emulated controller when ControllerEmu is started.\r\nOtherwise, the \'C" +
     "onnect Controller\' option in this menu needs to be manually pressed.";
             this.TrayCMenuConnectOnStart.Click += new System.EventHandler(this.TrayCMenuConnectOnStart_Click);
-            // 
-            // TrayCMenuEnableOnStart
-            // 
-            this.TrayCMenuEnableOnStart.Name = "TrayCMenuEnableOnStart";
-            this.TrayCMenuEnableOnStart.Size = new System.Drawing.Size(180, 22);
-            this.TrayCMenuEnableOnStart.Text = "Enable on Start";
-            this.TrayCMenuEnableOnStart.ToolTipText = resources.GetString("TrayCMenuEnableOnStart.ToolTipText");
-            this.TrayCMenuEnableOnStart.Click += new System.EventHandler(this.TrayCMenuEnableOnStart_Click);
             // 
             // TrayCMenuPlayEnabledAudio
             // 
@@ -163,7 +153,6 @@
         private System.Windows.Forms.ToolStripMenuItem TrayCMenuPlayEnabledAudio;
         private System.Windows.Forms.ToolStripMenuItem TrayCMenuPlayDisabledAudio;
         private System.Windows.Forms.ToolStripMenuItem TrayCMenuConnectOnStart;
-        private System.Windows.Forms.ToolStripMenuItem TrayCMenuEnableOnStart;
     }
 }
 

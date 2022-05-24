@@ -28,7 +28,6 @@ namespace ControllerEmu {
 
         public class GeneralOptions {
             public bool ConnectOnStart { get; set; } = true;
-            public bool EnableOnStart { get; set; } = false;
             public string ClientTitle { get; set; } = "LOST ARK";
             public int ToggleKey { get; set; } = 0;
         }

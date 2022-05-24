@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -51,7 +52,6 @@ namespace ControllerEmu {
         public event EventHandler<EventArgs> StateChanged;
         public event EventHandler<KeyHookEventArgs> KeyPress;
 
-        public bool Enabled { get; set; } = false;
         public bool Active { get; set; } = false;
         public bool UpdatingToggleKey { get; set; } = false;
 
@@ -90,7 +90,7 @@ namespace ControllerEmu {
         }
 
         private int KeyHookProc(int code, int wParam, ref KeyHookData lParam) {
-            if(code >= 0 && (Enabled || UpdatingToggleKey)) {
+            if(code >= 0) {
                 Keys key = (Keys)lParam.vkCode;
                 KeyState state = (KeyState)wParam;
 

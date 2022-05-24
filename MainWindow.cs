@@ -109,7 +109,6 @@ namespace ControllerEmu {
             }
 
             TrayCMenuToggleConnect.Text = enable ? "Disconnect Controller" : "Connect Controller";
-            InputHook.Enabled = enable && Config.General.EnableOnStart;
             InputHook.Active = false;
         }
 
@@ -141,11 +140,6 @@ namespace ControllerEmu {
             TrayCMenuConnectOnStart.Checked = Config.General.ConnectOnStart;
             Config.Save();
         }
-        private void TrayCMenuEnableOnStart_Click(object sender, EventArgs e) {
-            Config.General.EnableOnStart = !Config.General.EnableOnStart;
-            TrayCMenuEnableOnStart.Checked = Config.General.EnableOnStart;
-            Config.Save();
-        }
         private void TrayCMenuPlayEnabledAudio_Click(object sender, EventArgs e) {
             Config.Audio.EnabledAudioNotification = !Config.Audio.EnabledAudioNotification;
             TrayCMenuPlayEnabledAudio.Checked = Config.Audio.EnabledAudioNotification;
@@ -160,7 +154,6 @@ namespace ControllerEmu {
         private void InitializeConfigMenu() {
             TrayCMenuSetToggleKey.Text = $"Set Toggle Key ({(Keys)Config.General.ToggleKey})";
             TrayCMenuConnectOnStart.Checked = Config.General.ConnectOnStart;
-            TrayCMenuEnableOnStart.Checked = Config.General.EnableOnStart;
             TrayCMenuPlayEnabledAudio.Checked = Config.Audio.EnabledAudioNotification;
             TrayCMenuPlayDisabledAudio.Checked = Config.Audio.DisabledAudioNotification;
         }
