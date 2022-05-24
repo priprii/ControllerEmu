@@ -22,7 +22,6 @@ The **Config** submenu has a few options to configure:
 - - You will need to toggle emulation whenever you want to switch between using WASD for movement or things like chat.
 - - Note: Emulation is only active while the game is the active window, so you don't have to worry about needing to disable emulation manually when you alt-tab to a different window.
 - **Connect on Start**: Toggles whether the emulated controller will be automatically connected when ControllerEmu is started.
-- **Enable on Start**: Toggles whether emulation will by default be active when the controller is connected, or only active when the toggle key is pressed.
 - **Play Enabled/Disabled Audio**: Toggles whether an audio notification will play whenever emulation is enabled/disabled as a result of the toggle key being pressed.
 
 There are a few other config options you can configure directly from the Config.ini file, you will need to press the 'Reload Config' menu option when making changes to them:
