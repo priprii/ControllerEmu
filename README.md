@@ -9,18 +9,19 @@ Feel free to support me with a donation [here](https://streamlabs.com/primpri) i
 
 # Getting Started
 - First download & install [VigEm Bus Driver](https://github.com/ViGEm/ViGEmBus/releases/tag/setup-v1.17.333), you may need to reboot after.
+- - This is a driver which enables creation of a virtual controller and emulating input.
 - Start ControllerEmu.exe
 - - ControllerEmu will display as an icon in your task tray.
 - Right-click ControllerEmu in the task tray to bring up a context menu.
 - - The **Connect Controller**/**Disconnect Controller** option will toggle the state of the controller, similar to if you were to physically connect/disconnect a controller to your PC.
 - The toggle key must first be set before ControllerEmu can do anything, this is explained below in the Config
-- After setting the toggle key, you can then press it while the game is active to toggle emulation.
+- After setting the toggle key, you can then press it while the game is active to toggle the functionality of the WASD keys emulating analog controller input.
 
 # Config
 The **Config** submenu has a few options to configure:
 - **Set Toggle Key**: When clicking this, the next key you press will be the key used for toggling controller emulation.
 - - You will need to toggle emulation whenever you want to switch between using WASD for movement or things like chat.
-- - Note: Emulation is only active while the game is the active window, so you don't have to worry about needing to disable emulation manually when you alt-tab to a different window.
+- - Note: Emulation is only active while the game is the active window, the toggle key & WASD keys will have normal behaviour outside of the game window.
 - **Connect on Start**: Toggles whether the emulated controller will be automatically connected when ControllerEmu is started.
 - **Play Enabled/Disabled Audio**: Toggles whether an audio notification will play whenever emulation is enabled/disabled as a result of the toggle key being pressed.
 
