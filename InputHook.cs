@@ -211,7 +211,7 @@ namespace ControllerEmu {
                                 return -1;
                             }
                         }
-                    } else if(clientActive) {
+                    } else if(clientActive && Active) {
                         boundKey = SkillBindings.Find(x => x.Key == key && x.Key != Keys.None);
                         if(boundKey != null) {
                             if(state == KeyState.KeyDown) {
