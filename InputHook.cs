@@ -202,14 +202,14 @@ namespace ControllerEmu {
                             } else if(Active) {
                                 boundKey.Pressed = state == KeyState.KeyDown;
                                 KeyPress(this, new KeyPressEventArgs(boundKey));
-                                if(!Config.General.OverridePassthrough) {
+                                if(!Config.General.BindingPassthrough) {
                                     return -1;
                                 }
                             }
                         } else if(state == KeyState.KeyUp && boundKey.Pressed) {
                             boundKey.Pressed = false;
 
-                            if((boundKey.Button != Buttons.ToggleA || !Config.General.ToggleAPassthrough) && (boundKey.Button != Buttons.ToggleB || !Config.General.ToggleBPassthrough)) {
+                            if((boundKey.Button == Buttons.ToggleA && !Config.General.ToggleAPassthrough) || (boundKey.Button == Buttons.ToggleB && !Config.General.ToggleBPassthrough) || (boundKey.Button != Buttons.ToggleA && boundKey.Button != Buttons.ToggleB && !Config.General.BindingPassthrough)) {
                                 return -1;
                             }
                         }

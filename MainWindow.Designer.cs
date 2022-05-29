@@ -73,6 +73,7 @@
             this.priLabel18 = new Pri.Controls.PriLabel();
             this.BindingSkills = new Pri.Controls.PriComboBox();
             this.BindingSkillsUpdate = new Pri.Controls.PriButton();
+            this.BindingPassthrough = new Pri.Controls.PriCheckBox();
             this.TrayCMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -1044,12 +1045,24 @@
             this.BindingSkillsUpdate.UseSelectable = true;
             this.BindingSkillsUpdate.Click += new System.EventHandler(this.BindingSkillsUpdate_Click);
             // 
+            // BindingPassthrough
+            // 
+            this.BindingPassthrough.AutoSize = true;
+            this.BindingPassthrough.Location = new System.Drawing.Point(24, 259);
+            this.BindingPassthrough.Name = "BindingPassthrough";
+            this.BindingPassthrough.Size = new System.Drawing.Size(133, 15);
+            this.BindingPassthrough.TabIndex = 47;
+            this.BindingPassthrough.Text = "Binding Passthrough";
+            this.BindingPassthrough.UseSelectable = true;
+            this.BindingPassthrough.CheckedChanged += new System.EventHandler(this.BindingPassthrough_CheckedChanged);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = Pri.Forms.PriFormBorderStyle.FixedSingle;
             this.ClientSize = new System.Drawing.Size(475, 291);
+            this.Controls.Add(this.BindingPassthrough);
             this.Controls.Add(this.BindingSkillsUpdate);
             this.Controls.Add(this.BindingSkills);
             this.Controls.Add(this.priLabel18);
@@ -1157,6 +1170,7 @@
         private Pri.Controls.PriLabel priLabel18;
         private Pri.Controls.PriComboBox BindingSkills;
         private Pri.Controls.PriButton BindingSkillsUpdate;
+        private Pri.Controls.PriCheckBox BindingPassthrough;
     }
 }
 

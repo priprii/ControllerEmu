@@ -191,6 +191,8 @@ namespace ControllerEmu {
         private void InitializeConfig() {
             ToggleAPassthrough.Checked = Config.General.ToggleAPassthrough;
             ToggleBPassthrough.Checked = Config.General.ToggleBPassthrough;
+            BindingPassthrough.Checked = Config.General.BindingPassthrough;
+
             ToggleAAudio.Checked = Config.General.ToggleAAudio;
             ToggleBAudio.Checked = Config.General.ToggleBAudio;
             ClientTitle.Text = Config.General.ClientTitle;
@@ -227,6 +229,10 @@ namespace ControllerEmu {
         }
         private void ToggleBPassthrough_CheckedChanged(object sender, EventArgs e) {
             Config.General.ToggleBPassthrough = ToggleBPassthrough.Checked;
+            Config.Save();
+        }
+        private void BindingPassthrough_CheckedChanged(object sender, EventArgs e) {
+            Config.General.BindingPassthrough = BindingPassthrough.Checked;
             Config.Save();
         }
         private void ToggleAAudio_CheckedChanged(object sender, EventArgs e) {
