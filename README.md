@@ -30,9 +30,10 @@ There are a number of buttons you can bind to your keys in this window, it works
 - - You can replace the 'toggleon.mp3' and 'toggleoff.mp3' files if you have other sounds you want to use for notification.
 - **Process Title** (default: LOST ARK): This determines which process ControllerEmu will check for inputs in, it's a partial match of the window title.
 
-# Notes/Issues
+# Notes
 
 - I'd recommend setting 'Toggle A' to something like 'F1' with 'Passthrough' disabled, and 'Toggle B' set to 'Enter' with 'Passthrough' enabled. This will allow you to enable emulation with 'F1', and then toggle emulation whenever you use the in-game chat.
+- You can unbind a key in ControllerEmu by clicking the box for it then pressing the 'Escape' key.
 - The 'Use Gamepad' option in Lost Ark settings must be enabled for ControllerEmu to work.
 - - This results in input prompts displaying as controller buttons instead of keyboard keys, you can fix this by unassigning all of the bindings in Gamepad -> Control. You can unassign them by setting them to the same button as another binding.
 - - - Assigning button bindings requires a controller, but you can instead temporarily assign a key to a button in ControllerEmu (Like assign 'A' to 'F2') and then use this key to assign the button bindings.
