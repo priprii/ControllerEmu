@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -44,36 +44,64 @@ namespace ControllerEmu {
         }
     }
 
+    public class KeyPressEventArgs : HandledEventArgs {
+        public Binding Binding { get; private set; }
+
+        public KeyPressEventArgs(Binding binding) {
+            Binding = binding;
+        }
+    }
+
+    public class Binding {
+        public Buttons Button { get; set; }
+        public Keys Key { get; set; }
+        public bool Pressed { get; set; }
+        public bool Updating { get; set; }
+    }
+
+    public enum Buttons {
+        ToggleA, ToggleB, Up, Down, Left, Right, A, B, X, Y, L1, L2, R1, R2, Start, Back
+    }
+
     public class InputHook {
         protected IntPtr KeyHook = IntPtr.Zero;
         protected KeyHookProc KeyHookDelegate;
 
-        public event EventHandler<KeyHookEventArgs> ToggleKeyUpdated;
-        public event EventHandler<EventArgs> StateChanged;
-        public event EventHandler<KeyHookEventArgs> KeyPress;
+        public event EventHandler<EventArgs> BindingUpdated;
+        public event EventHandler<KeyPressEventArgs> StateChanged;
+        public event EventHandler<KeyPressEventArgs> KeyPress;
 
-        public bool Active { get; set; } = false;
-        public bool UpdatingToggleKey { get; set; } = false;
+        public bool Active = false;
+        public bool Updating = false;
 
-        public bool CtrlDown { get; set; } = false;
-        public bool ShiftDown { get; set; } = false;
-        public bool AltDown { get; set; } = false;
-
-        private Keys ToggleKey = Keys.Oem8; //Tilde key on UK keyboard
-        private bool ToggleKeyDown = false;
-        private bool WDown = false;
-        private bool ADown = false;
-        private bool SDown = false;
-        private bool DDown = false;
+        public List<Binding> Bindings;
 
         private enum HookID : int {
             WH_KEYBOARD_LL = 13,
             WH_MOUSE_LL = 14
         }
 
-        public InputHook(int toggleKeyCode) {
+        public InputHook() {
             Hook();
-            ToggleKey = (Keys)toggleKeyCode;
+
+            Bindings = new List<Binding>() {
+                new Binding { Button = Buttons.ToggleA, Key = Config.Binding.ToggleA },
+                new Binding { Button = Buttons.ToggleB, Key = Config.Binding.ToggleB },
+                new Binding { Button = Buttons.Up, Key = Config.Binding.Up },
+                new Binding { Button = Buttons.Down, Key = Config.Binding.Down },
+                new Binding { Button = Buttons.Left, Key = Config.Binding.Left },
+                new Binding { Button = Buttons.Right, Key = Config.Binding.Right },
+                new Binding { Button = Buttons.A, Key = Config.Binding.A },
+                new Binding { Button = Buttons.B, Key = Config.Binding.B },
+                new Binding { Button = Buttons.X, Key = Config.Binding.X },
+                new Binding { Button = Buttons.Y, Key = Config.Binding.Y },
+                new Binding { Button = Buttons.L1, Key = Config.Binding.L1 },
+                new Binding { Button = Buttons.L2, Key = Config.Binding.L2},
+                new Binding { Button = Buttons.R1, Key = Config.Binding.R1 },
+                new Binding { Button = Buttons.R2, Key = Config.Binding.R2 },
+                new Binding { Button = Buttons.Start, Key = Config.Binding.Start },
+                new Binding { Button = Buttons.Back, Key = Config.Binding.Back },
+            };
         }
 
         ~InputHook() { Unhook(); }
@@ -94,80 +122,54 @@ namespace ControllerEmu {
                 Keys key = (Keys)lParam.vkCode;
                 KeyState state = (KeyState)wParam;
 
-                if(UpdatingToggleKey) {
+                if(Updating) {
                     if(state == KeyState.KeyUp) {
-                        UpdatingToggleKey = false;
-                        ToggleKey = key;
-                        ToggleKeyUpdated(this, new KeyHookEventArgs(key, KeyState.KeyUp));
-                        return -1;
-                    } else {
-                        return -1;
-                    }
-                } else {
-                    string winTitle = WinApi.GetWindowTitle(WinApi.GetForegroundWindow());
-                    bool clientActive = winTitle.Contains(Config.General.ClientTitle);
+                        Updating = false;
+                        Binding binding = Bindings.Find(x => x.Updating == true);
+                        if(binding != null) {
+                            binding.Updating = false;
 
-                    if(key == Keys.LControlKey) {
-                        CtrlDown = state == KeyState.KeyDown;
-                    } else if(key == Keys.LShiftKey) {
-                        ShiftDown = state == KeyState.KeyDown;
-                    } else if(key == Keys.LMenu) {
-                        AltDown = state == KeyState.KeyDown;
-                    }
-
-                    if(clientActive && !CtrlDown && !ShiftDown && !AltDown) {
-                        if(key == ToggleKey) {
-                            ToggleKeyDown = state == KeyState.KeyDown;
-                            if(state == KeyState.KeyUp) {
-                                Active = !Active;
-                                StateChanged(this, new EventArgs());
+                            if(key == Keys.Escape) {
+                                binding.Key = Keys.None;
+                            } else {
+                                Binding alreadySet = Bindings.Find(x => x.Key == key && x.Button != binding.Button);
+                                if(alreadySet != null) {
+                                    alreadySet.Key = Keys.None;
+                                }
+                                binding.Key = key;
                             }
-                            return -1;
-                        } else if(key == Keys.W && Active) {
-                            WDown = state == KeyState.KeyDown;
-                            KeyPress(this, new KeyHookEventArgs(key, state));
-                            return -1;
-                        } else if(key == Keys.A && Active) {
-                            ADown = state == KeyState.KeyDown;
-                            KeyPress(this, new KeyHookEventArgs(key, state));
-                            return -1;
-                        } else if(key == Keys.S && Active) {
-                            SDown = state == KeyState.KeyDown;
-                            KeyPress(this, new KeyHookEventArgs(key, state));
-                            return -1;
-                        } else if(key == Keys.D && Active) {
-                            DDown = state == KeyState.KeyDown;
-                            KeyPress(this, new KeyHookEventArgs(key, state));
-                            return -1;
+
+                            BindingUpdated(this, new EventArgs());
                         }
-                    } else {
-                        if(key == ToggleKey && state == KeyState.KeyUp && ToggleKeyDown) {
-                            ToggleKeyDown = false;
-                            return -1;
-                        } else if(key == Keys.W && state == KeyState.KeyUp && WDown) {
-                            if(clientActive) {
-                                KeyPress(this, new KeyHookEventArgs(key, state));
+                    }
+                    return -1;
+                } else {
+                    string winTitle = WinApi.GetWindowTitle(WinApi.GetForegroundWindow()).ToLower();
+                    bool clientActive = winTitle.StartsWith(Config.General.ClientTitle.ToLower());
+
+                    Binding boundKey = Bindings.Find(x => x.Key == key && x.Key != Keys.None);
+                    if(boundKey != null) {
+                        if(clientActive) {
+                            if(boundKey.Button == Buttons.ToggleA || boundKey.Button == Buttons.ToggleB) {
+                                boundKey.Pressed = state == KeyState.KeyDown;
+                                if(state == KeyState.KeyUp) {
+                                    Active = !Active;
+                                    StateChanged(this, new KeyPressEventArgs(boundKey));
+                                }
+                                if((boundKey.Button == Buttons.ToggleA && !Config.General.ToggleAPassthrough) || (boundKey.Button == Buttons.ToggleB && !Config.General.ToggleBPassthrough)) {
+                                    return -1;
+                                }
+                            } else if(Active) {
+                                boundKey.Pressed = state == KeyState.KeyDown;
+                                KeyPress(this, new KeyPressEventArgs(boundKey));
+                                return -1;
                             }
-                            WDown = false;
-                            return -1;
-                        } else if(key == Keys.A && state == KeyState.KeyUp && ADown) {
-                            if(clientActive) {
-                                KeyPress(this, new KeyHookEventArgs(key, state));
+                        } else if(state == KeyState.KeyUp && boundKey.Pressed) {
+                            boundKey.Pressed = false;
+
+                            if((boundKey.Button != Buttons.ToggleA || !Config.General.ToggleAPassthrough) && (boundKey.Button != Buttons.ToggleB || !Config.General.ToggleBPassthrough)) {
+                                return -1;
                             }
-                            ADown = false;
-                            return -1;
-                        } else if(key == Keys.S && state == KeyState.KeyUp && SDown) {
-                            if(clientActive) {
-                                KeyPress(this, new KeyHookEventArgs(key, state));
-                            }
-                            SDown = false;
-                            return -1;
-                        } else if(key == Keys.D && state == KeyState.KeyUp && DDown) {
-                            if(clientActive) {
-                                KeyPress(this, new KeyHookEventArgs(key, state));
-                            }
-                            DDown = false;
-                            return -1;
                         }
                     }
                 }
