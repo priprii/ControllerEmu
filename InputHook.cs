@@ -202,7 +202,9 @@ namespace ControllerEmu {
                             } else if(Active) {
                                 boundKey.Pressed = state == KeyState.KeyDown;
                                 KeyPress(this, new KeyPressEventArgs(boundKey));
-                                return -1;
+                                if(!Config.General.OverridePassthrough) {
+                                    return -1;
+                                }
                             }
                         } else if(state == KeyState.KeyUp && boundKey.Pressed) {
                             boundKey.Pressed = false;

@@ -42,6 +42,7 @@ namespace ControllerEmu {
 
         public class GeneralOptions {
             public string ClientTitle { get; set; } = "LOST ARK";
+            public bool OverridePassthrough { get; set; } = false;
             public bool ToggleAPassthrough { get; set; } = false;
             public bool ToggleBPassthrough { get; set; } = true;
             public bool ToggleAAudio { get; set; } = true;
