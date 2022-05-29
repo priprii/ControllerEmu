@@ -5,6 +5,8 @@ This application is intended for use in Lost Ark which does not officially suppo
 
 Lost Ark supports the use of a controller whereby the character can be moved with the left analog stick. So taking advantage of this, ControllerEmu can be used to bind the WASD keys to emulate the left analog stick on a controller, other button bindings are also made available if needed.
 
+Short Demonstration: https://youtube.com/watch?v=IIRJhKnOYI0
+
 Feel free to support me with a donation [here](https://streamlabs.com/primpri) if this app was of use to you.
 
 # Getting Started
