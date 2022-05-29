@@ -10,7 +10,7 @@ Feel free to support me with a donation [here](https://streamlabs.com/primpri) i
 # Getting Started
 - First download & install [VigEm Bus Driver](https://github.com/ViGEm/ViGEmBus/releases/tag/setup-v1.17.333)
 - - This is a driver which enables creation of a virtual controller and emulating input.
-- Download ControllerEmu from the releases page [here](https://github.com/priprii/ControllerEmu/releases), extract it after download.
+- Download ControllerEmu.zip from the releases page [here](https://github.com/priprii/ControllerEmu/releases), extract it after download.
 - Start ControllerEmu.exe
 - - ControllerEmu will display as an icon in your task tray.
 
