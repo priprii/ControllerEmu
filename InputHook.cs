@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -52,6 +54,14 @@ namespace ControllerEmu {
         }
     }
 
+    public class AxisPosEventArgs : HandledEventArgs {
+        public Point AxisPos { get; private set; }
+
+        public AxisPosEventArgs(Point axisPos) {
+            AxisPos = axisPos;
+        }
+    }
+
     public class Binding {
         public Buttons Button { get; set; }
         public Keys Key { get; set; }
@@ -67,14 +77,24 @@ namespace ControllerEmu {
         protected IntPtr KeyHook = IntPtr.Zero;
         protected KeyHookProc KeyHookDelegate;
 
-        public event EventHandler<EventArgs> BindingUpdated;
+        public event EventHandler<EventArgs> EmuBindingUpdated;
+        public event EventHandler<EventArgs> SkillBindingsUpdated;
         public event EventHandler<KeyPressEventArgs> StateChanged;
         public event EventHandler<KeyPressEventArgs> KeyPress;
+        public event EventHandler<AxisPosEventArgs> AxisUpdate;
+        public event EventHandler<EventArgs> AxisReturn;
+
+        public const short MIN_AXIS = -32768;
+        public const short MAX_AXIS = 32767;
+        public const byte MIN_SLIDER = 0;
+        public const byte MAX_SLIDER = 255;
 
         public bool Active = false;
-        public bool Updating = false;
+        public bool UpdatingEmuBindings = false;
+        public bool UpdatingSkillBindings = false;
 
-        public List<Binding> Bindings;
+        public List<Binding> EmuBindings;
+        public List<Binding> SkillBindings;
 
         private enum HookID : int {
             WH_KEYBOARD_LL = 13,
@@ -84,7 +104,7 @@ namespace ControllerEmu {
         public InputHook() {
             Hook();
 
-            Bindings = new List<Binding>() {
+            EmuBindings = new List<Binding>() {
                 new Binding { Button = Buttons.ToggleA, Key = Config.Binding.ToggleA },
                 new Binding { Button = Buttons.ToggleB, Key = Config.Binding.ToggleB },
                 new Binding { Button = Buttons.Up, Key = Config.Binding.Up },
@@ -102,6 +122,11 @@ namespace ControllerEmu {
                 new Binding { Button = Buttons.Start, Key = Config.Binding.Start },
                 new Binding { Button = Buttons.Back, Key = Config.Binding.Back },
             };
+
+            SkillBindings = new List<Binding>();
+            foreach(Keys key in Config.Binding.SkillBindings) {
+                SkillBindings.Add(new Binding { Key = key });
+            }
         }
 
         ~InputHook() { Unhook(); }
@@ -122,32 +147,47 @@ namespace ControllerEmu {
                 Keys key = (Keys)lParam.vkCode;
                 KeyState state = (KeyState)wParam;
 
-                if(Updating) {
+                if(UpdatingEmuBindings || UpdatingSkillBindings) {
                     if(state == KeyState.KeyUp) {
-                        Updating = false;
-                        Binding binding = Bindings.Find(x => x.Updating == true);
-                        if(binding != null) {
-                            binding.Updating = false;
+                        if(UpdatingEmuBindings) {
+                            UpdatingEmuBindings = false;
 
-                            if(key == Keys.Escape) {
-                                binding.Key = Keys.None;
-                            } else {
-                                Binding alreadySet = Bindings.Find(x => x.Key == key && x.Button != binding.Button);
-                                if(alreadySet != null) {
-                                    alreadySet.Key = Keys.None;
+                            Binding binding = EmuBindings.Find(x => x.Updating == true);
+                            if(binding != null) {
+                                binding.Updating = false;
+
+                                if(key == Keys.Escape) {
+                                    binding.Key = Keys.None;
+                                } else {
+                                    Binding alreadySet = EmuBindings.Find(x => x.Key == key && x.Button != binding.Button);
+                                    if(alreadySet != null) {
+                                        alreadySet.Key = Keys.None;
+                                    }
+                                    binding.Key = key;
                                 }
-                                binding.Key = key;
+
+                                EmuBindingUpdated(this, new EventArgs());
+                            }
+                        } else {
+                            UpdatingSkillBindings = false;
+
+                            Binding binding = SkillBindings.Find(x => x.Key == key);
+                            if(binding == null) {
+                                SkillBindings.Add(new Binding { Key = key });
+                            } else {
+                                SkillBindings.Remove(binding);
                             }
 
-                            BindingUpdated(this, new EventArgs());
+                            SkillBindingsUpdated(this, new EventArgs());
                         }
                     }
                     return -1;
                 } else {
-                    string winTitle = WinApi.GetWindowTitle(WinApi.GetForegroundWindow()).ToLower();
+                    IntPtr hWnd = WinApi.GetForegroundWindow();
+                    string winTitle = WinApi.GetWindowTitle(hWnd).ToLower();
                     bool clientActive = winTitle.StartsWith(Config.General.ClientTitle.ToLower());
 
-                    Binding boundKey = Bindings.Find(x => x.Key == key && x.Key != Keys.None);
+                    Binding boundKey = EmuBindings.Find(x => x.Key == key && x.Key != Keys.None);
                     if(boundKey != null) {
                         if(clientActive) {
                             if(boundKey.Button == Buttons.ToggleA || boundKey.Button == Buttons.ToggleB) {
@@ -169,6 +209,21 @@ namespace ControllerEmu {
 
                             if((boundKey.Button != Buttons.ToggleA || !Config.General.ToggleAPassthrough) && (boundKey.Button != Buttons.ToggleB || !Config.General.ToggleBPassthrough)) {
                                 return -1;
+                            }
+                        }
+                    } else if(clientActive) {
+                        boundKey = SkillBindings.Find(x => x.Key == key && x.Key != Keys.None);
+                        if(boundKey != null) {
+                            if(state == KeyState.KeyDown) {
+                                WinApi.GetWindowRect(hWnd, out WinApi.RECT clientRect);
+                                Size halfRes = new Size(clientRect.Width / 2, clientRect.Height / 2);
+                                Point relativePos = new Point(Cursor.Position.X - clientRect.X, Cursor.Position.Y - clientRect.Y);
+                                Point midOffset = new Point(relativePos.X - halfRes.Width, relativePos.Y - halfRes.Height);
+                                Point axisTranslation = new Point((int)((float)midOffset.X / halfRes.Width * MAX_AXIS), (int)-((float)midOffset.Y / halfRes.Height * MAX_AXIS));
+
+                                AxisUpdate(this, new AxisPosEventArgs(axisTranslation));
+                            } else {
+                                AxisReturn(this, new EventArgs());
                             }
                         }
                     }

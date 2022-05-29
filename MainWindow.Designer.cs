@@ -69,6 +69,10 @@
             this.ToggleBPassthrough = new Pri.Controls.PriCheckBox();
             this.BindingToggleB = new Pri.Controls.PriTextBox();
             this.priLabel16 = new Pri.Controls.PriLabel();
+            this.priLabel17 = new Pri.Controls.PriLabel();
+            this.priLabel18 = new Pri.Controls.PriLabel();
+            this.BindingSkills = new Pri.Controls.PriComboBox();
+            this.BindingSkillsUpdate = new Pri.Controls.PriButton();
             this.TrayCMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -118,7 +122,7 @@
             // 
             // priLabel1
             // 
-            this.priLabel1.Location = new System.Drawing.Point(5, 149);
+            this.priLabel1.Location = new System.Drawing.Point(5, 153);
             this.priLabel1.Name = "priLabel1";
             this.priLabel1.Size = new System.Drawing.Size(57, 23);
             this.priLabel1.TabIndex = 1;
@@ -127,7 +131,7 @@
             // 
             // priLabel2
             // 
-            this.priLabel2.Location = new System.Drawing.Point(5, 172);
+            this.priLabel2.Location = new System.Drawing.Point(5, 176);
             this.priLabel2.Name = "priLabel2";
             this.priLabel2.Size = new System.Drawing.Size(57, 23);
             this.priLabel2.TabIndex = 2;
@@ -136,7 +140,7 @@
             // 
             // priLabel3
             // 
-            this.priLabel3.Location = new System.Drawing.Point(5, 195);
+            this.priLabel3.Location = new System.Drawing.Point(5, 199);
             this.priLabel3.Name = "priLabel3";
             this.priLabel3.Size = new System.Drawing.Size(57, 23);
             this.priLabel3.TabIndex = 3;
@@ -145,7 +149,7 @@
             // 
             // priLabel4
             // 
-            this.priLabel4.Location = new System.Drawing.Point(5, 218);
+            this.priLabel4.Location = new System.Drawing.Point(5, 222);
             this.priLabel4.Name = "priLabel4";
             this.priLabel4.Size = new System.Drawing.Size(57, 23);
             this.priLabel4.TabIndex = 4;
@@ -154,7 +158,7 @@
             // 
             // priLabel5
             // 
-            this.priLabel5.Location = new System.Drawing.Point(163, 149);
+            this.priLabel5.Location = new System.Drawing.Point(163, 153);
             this.priLabel5.Name = "priLabel5";
             this.priLabel5.Size = new System.Drawing.Size(57, 23);
             this.priLabel5.TabIndex = 5;
@@ -163,7 +167,7 @@
             // 
             // priLabel6
             // 
-            this.priLabel6.Location = new System.Drawing.Point(163, 172);
+            this.priLabel6.Location = new System.Drawing.Point(163, 176);
             this.priLabel6.Name = "priLabel6";
             this.priLabel6.Size = new System.Drawing.Size(57, 23);
             this.priLabel6.TabIndex = 6;
@@ -172,7 +176,7 @@
             // 
             // priLabel7
             // 
-            this.priLabel7.Location = new System.Drawing.Point(163, 195);
+            this.priLabel7.Location = new System.Drawing.Point(163, 199);
             this.priLabel7.Name = "priLabel7";
             this.priLabel7.Size = new System.Drawing.Size(57, 23);
             this.priLabel7.TabIndex = 7;
@@ -181,7 +185,7 @@
             // 
             // priLabel8
             // 
-            this.priLabel8.Location = new System.Drawing.Point(163, 218);
+            this.priLabel8.Location = new System.Drawing.Point(163, 222);
             this.priLabel8.Name = "priLabel8";
             this.priLabel8.Size = new System.Drawing.Size(57, 23);
             this.priLabel8.TabIndex = 8;
@@ -190,7 +194,7 @@
             // 
             // priLabel9
             // 
-            this.priLabel9.Location = new System.Drawing.Point(321, 149);
+            this.priLabel9.Location = new System.Drawing.Point(321, 153);
             this.priLabel9.Name = "priLabel9";
             this.priLabel9.Size = new System.Drawing.Size(57, 23);
             this.priLabel9.TabIndex = 9;
@@ -199,7 +203,7 @@
             // 
             // priLabel10
             // 
-            this.priLabel10.Location = new System.Drawing.Point(321, 172);
+            this.priLabel10.Location = new System.Drawing.Point(321, 176);
             this.priLabel10.Name = "priLabel10";
             this.priLabel10.Size = new System.Drawing.Size(57, 23);
             this.priLabel10.TabIndex = 10;
@@ -208,7 +212,7 @@
             // 
             // priLabel11
             // 
-            this.priLabel11.Location = new System.Drawing.Point(321, 195);
+            this.priLabel11.Location = new System.Drawing.Point(321, 199);
             this.priLabel11.Name = "priLabel11";
             this.priLabel11.Size = new System.Drawing.Size(57, 23);
             this.priLabel11.TabIndex = 11;
@@ -217,7 +221,7 @@
             // 
             // priLabel12
             // 
-            this.priLabel12.Location = new System.Drawing.Point(321, 218);
+            this.priLabel12.Location = new System.Drawing.Point(321, 222);
             this.priLabel12.Name = "priLabel12";
             this.priLabel12.Size = new System.Drawing.Size(57, 23);
             this.priLabel12.TabIndex = 12;
@@ -240,7 +244,7 @@
             this.BindingUp.CustomButton.Visible = false;
             this.BindingUp.Lines = new string[] {
         "None"};
-            this.BindingUp.Location = new System.Drawing.Point(78, 149);
+            this.BindingUp.Location = new System.Drawing.Point(78, 153);
             this.BindingUp.MaxLength = 32767;
             this.BindingUp.Name = "BindingUp";
             this.BindingUp.PasswordChar = '\0';
@@ -277,7 +281,7 @@
             this.BindingDown.CustomButton.Visible = false;
             this.BindingDown.Lines = new string[] {
         "None"};
-            this.BindingDown.Location = new System.Drawing.Point(78, 172);
+            this.BindingDown.Location = new System.Drawing.Point(78, 176);
             this.BindingDown.MaxLength = 32767;
             this.BindingDown.Name = "BindingDown";
             this.BindingDown.PasswordChar = '\0';
@@ -314,7 +318,7 @@
             this.BindingLeft.CustomButton.Visible = false;
             this.BindingLeft.Lines = new string[] {
         "None"};
-            this.BindingLeft.Location = new System.Drawing.Point(78, 195);
+            this.BindingLeft.Location = new System.Drawing.Point(78, 199);
             this.BindingLeft.MaxLength = 32767;
             this.BindingLeft.Name = "BindingLeft";
             this.BindingLeft.PasswordChar = '\0';
@@ -351,7 +355,7 @@
             this.BindingRight.CustomButton.Visible = false;
             this.BindingRight.Lines = new string[] {
         "None"};
-            this.BindingRight.Location = new System.Drawing.Point(78, 218);
+            this.BindingRight.Location = new System.Drawing.Point(78, 222);
             this.BindingRight.MaxLength = 32767;
             this.BindingRight.Name = "BindingRight";
             this.BindingRight.PasswordChar = '\0';
@@ -388,7 +392,7 @@
             this.BindingY.CustomButton.Visible = false;
             this.BindingY.Lines = new string[] {
         "None"};
-            this.BindingY.Location = new System.Drawing.Point(236, 218);
+            this.BindingY.Location = new System.Drawing.Point(236, 222);
             this.BindingY.MaxLength = 32767;
             this.BindingY.Name = "BindingY";
             this.BindingY.PasswordChar = '\0';
@@ -425,7 +429,7 @@
             this.BindingX.CustomButton.Visible = false;
             this.BindingX.Lines = new string[] {
         "None"};
-            this.BindingX.Location = new System.Drawing.Point(236, 195);
+            this.BindingX.Location = new System.Drawing.Point(236, 199);
             this.BindingX.MaxLength = 32767;
             this.BindingX.Name = "BindingX";
             this.BindingX.PasswordChar = '\0';
@@ -462,7 +466,7 @@
             this.BindingB.CustomButton.Visible = false;
             this.BindingB.Lines = new string[] {
         "None"};
-            this.BindingB.Location = new System.Drawing.Point(236, 172);
+            this.BindingB.Location = new System.Drawing.Point(236, 176);
             this.BindingB.MaxLength = 32767;
             this.BindingB.Name = "BindingB";
             this.BindingB.PasswordChar = '\0';
@@ -499,7 +503,7 @@
             this.BindingA.CustomButton.Visible = false;
             this.BindingA.Lines = new string[] {
         "None"};
-            this.BindingA.Location = new System.Drawing.Point(236, 149);
+            this.BindingA.Location = new System.Drawing.Point(236, 153);
             this.BindingA.MaxLength = 32767;
             this.BindingA.Name = "BindingA";
             this.BindingA.PasswordChar = '\0';
@@ -536,7 +540,7 @@
             this.BindingR2.CustomButton.Visible = false;
             this.BindingR2.Lines = new string[] {
         "None"};
-            this.BindingR2.Location = new System.Drawing.Point(394, 218);
+            this.BindingR2.Location = new System.Drawing.Point(394, 222);
             this.BindingR2.MaxLength = 32767;
             this.BindingR2.Name = "BindingR2";
             this.BindingR2.PasswordChar = '\0';
@@ -573,7 +577,7 @@
             this.BindingR1.CustomButton.Visible = false;
             this.BindingR1.Lines = new string[] {
         "None"};
-            this.BindingR1.Location = new System.Drawing.Point(394, 195);
+            this.BindingR1.Location = new System.Drawing.Point(394, 199);
             this.BindingR1.MaxLength = 32767;
             this.BindingR1.Name = "BindingR1";
             this.BindingR1.PasswordChar = '\0';
@@ -610,7 +614,7 @@
             this.BindingL2.CustomButton.Visible = false;
             this.BindingL2.Lines = new string[] {
         "None"};
-            this.BindingL2.Location = new System.Drawing.Point(394, 172);
+            this.BindingL2.Location = new System.Drawing.Point(394, 176);
             this.BindingL2.MaxLength = 32767;
             this.BindingL2.Name = "BindingL2";
             this.BindingL2.PasswordChar = '\0';
@@ -647,7 +651,7 @@
             this.BindingL1.CustomButton.Visible = false;
             this.BindingL1.Lines = new string[] {
         "None"};
-            this.BindingL1.Location = new System.Drawing.Point(394, 149);
+            this.BindingL1.Location = new System.Drawing.Point(394, 153);
             this.BindingL1.MaxLength = 32767;
             this.BindingL1.Name = "BindingL1";
             this.BindingL1.PasswordChar = '\0';
@@ -684,7 +688,7 @@
             this.BindingBack.CustomButton.Visible = false;
             this.BindingBack.Lines = new string[] {
         "None"};
-            this.BindingBack.Location = new System.Drawing.Point(236, 247);
+            this.BindingBack.Location = new System.Drawing.Point(236, 251);
             this.BindingBack.MaxLength = 32767;
             this.BindingBack.Name = "BindingBack";
             this.BindingBack.PasswordChar = '\0';
@@ -721,7 +725,7 @@
             this.BindingStart.CustomButton.Visible = false;
             this.BindingStart.Lines = new string[] {
         "None"};
-            this.BindingStart.Location = new System.Drawing.Point(394, 247);
+            this.BindingStart.Location = new System.Drawing.Point(394, 251);
             this.BindingStart.MaxLength = 32767;
             this.BindingStart.Name = "BindingStart";
             this.BindingStart.PasswordChar = '\0';
@@ -744,7 +748,7 @@
             // 
             // priLabel13
             // 
-            this.priLabel13.Location = new System.Drawing.Point(321, 247);
+            this.priLabel13.Location = new System.Drawing.Point(321, 251);
             this.priLabel13.Name = "priLabel13";
             this.priLabel13.Size = new System.Drawing.Size(57, 23);
             this.priLabel13.TabIndex = 25;
@@ -753,7 +757,7 @@
             // 
             // priLabel14
             // 
-            this.priLabel14.Location = new System.Drawing.Point(163, 247);
+            this.priLabel14.Location = new System.Drawing.Point(163, 251);
             this.priLabel14.Name = "priLabel14";
             this.priLabel14.Size = new System.Drawing.Size(57, 23);
             this.priLabel14.TabIndex = 26;
@@ -776,7 +780,7 @@
             this.BindingToggleA.CustomButton.Visible = false;
             this.BindingToggleA.Lines = new string[] {
         "None"};
-            this.BindingToggleA.Location = new System.Drawing.Point(78, 56);
+            this.BindingToggleA.Location = new System.Drawing.Point(78, 38);
             this.BindingToggleA.MaxLength = 32767;
             this.BindingToggleA.Name = "BindingToggleA";
             this.BindingToggleA.PasswordChar = '\0';
@@ -799,7 +803,7 @@
             // 
             // priLabel15
             // 
-            this.priLabel15.Location = new System.Drawing.Point(5, 56);
+            this.priLabel15.Location = new System.Drawing.Point(5, 38);
             this.priLabel15.Name = "priLabel15";
             this.priLabel15.Size = new System.Drawing.Size(67, 23);
             this.priLabel15.TabIndex = 29;
@@ -821,7 +825,7 @@
             this.ClientTitle.CustomButton.UseSelectable = true;
             this.ClientTitle.CustomButton.Visible = false;
             this.ClientTitle.Lines = new string[0];
-            this.ClientTitle.Location = new System.Drawing.Point(321, 41);
+            this.ClientTitle.Location = new System.Drawing.Point(321, 43);
             this.ClientTitle.MaxLength = 32767;
             this.ClientTitle.Name = "ClientTitle";
             this.ClientTitle.PasswordChar = '\0';
@@ -847,7 +851,7 @@
             0,
             0,
             131072});
-            this.EnabledVolume.Location = new System.Drawing.Point(321, 72);
+            this.EnabledVolume.Location = new System.Drawing.Point(321, 74);
             this.EnabledVolume.Maximum = new decimal(new int[] {
             1,
             0,
@@ -883,7 +887,7 @@
             0,
             0,
             131072});
-            this.DisabledVolume.Location = new System.Drawing.Point(321, 103);
+            this.DisabledVolume.Location = new System.Drawing.Point(321, 105);
             this.DisabledVolume.Maximum = new decimal(new int[] {
             1,
             0,
@@ -914,7 +918,7 @@
             // ToggleAPassthrough
             // 
             this.ToggleAPassthrough.AutoSize = true;
-            this.ToggleAPassthrough.Location = new System.Drawing.Point(150, 61);
+            this.ToggleAPassthrough.Location = new System.Drawing.Point(150, 43);
             this.ToggleAPassthrough.Name = "ToggleAPassthrough";
             this.ToggleAPassthrough.Size = new System.Drawing.Size(89, 15);
             this.ToggleAPassthrough.TabIndex = 36;
@@ -925,7 +929,7 @@
             // ToggleAAudio
             // 
             this.ToggleAAudio.AutoSize = true;
-            this.ToggleAAudio.Location = new System.Drawing.Point(244, 61);
+            this.ToggleAAudio.Location = new System.Drawing.Point(244, 43);
             this.ToggleAAudio.Name = "ToggleAAudio";
             this.ToggleAAudio.Size = new System.Drawing.Size(55, 15);
             this.ToggleAAudio.TabIndex = 37;
@@ -936,7 +940,7 @@
             // ToggleBAudio
             // 
             this.ToggleBAudio.AutoSize = true;
-            this.ToggleBAudio.Location = new System.Drawing.Point(244, 87);
+            this.ToggleBAudio.Location = new System.Drawing.Point(244, 69);
             this.ToggleBAudio.Name = "ToggleBAudio";
             this.ToggleBAudio.Size = new System.Drawing.Size(55, 15);
             this.ToggleBAudio.TabIndex = 41;
@@ -947,7 +951,7 @@
             // ToggleBPassthrough
             // 
             this.ToggleBPassthrough.AutoSize = true;
-            this.ToggleBPassthrough.Location = new System.Drawing.Point(150, 87);
+            this.ToggleBPassthrough.Location = new System.Drawing.Point(150, 69);
             this.ToggleBPassthrough.Name = "ToggleBPassthrough";
             this.ToggleBPassthrough.Size = new System.Drawing.Size(89, 15);
             this.ToggleBPassthrough.TabIndex = 40;
@@ -971,7 +975,7 @@
             this.BindingToggleB.CustomButton.Visible = false;
             this.BindingToggleB.Lines = new string[] {
         "None"};
-            this.BindingToggleB.Location = new System.Drawing.Point(78, 82);
+            this.BindingToggleB.Location = new System.Drawing.Point(78, 64);
             this.BindingToggleB.MaxLength = 32767;
             this.BindingToggleB.Name = "BindingToggleB";
             this.BindingToggleB.PasswordChar = '\0';
@@ -994,12 +998,51 @@
             // 
             // priLabel16
             // 
-            this.priLabel16.Location = new System.Drawing.Point(5, 82);
+            this.priLabel16.Location = new System.Drawing.Point(5, 64);
             this.priLabel16.Name = "priLabel16";
             this.priLabel16.Size = new System.Drawing.Size(67, 23);
             this.priLabel16.TabIndex = 38;
             this.priLabel16.Text = "Toggle B";
             this.priLabel16.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // priLabel17
+            // 
+            this.priLabel17.Location = new System.Drawing.Point(5, 94);
+            this.priLabel17.Name = "priLabel17";
+            this.priLabel17.Size = new System.Drawing.Size(136, 27);
+            this.priLabel17.TabIndex = 43;
+            this.priLabel17.Text = "Mouse Direction";
+            this.priLabel17.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // priLabel18
+            // 
+            this.priLabel18.Location = new System.Drawing.Point(5, 115);
+            this.priLabel18.Name = "priLabel18";
+            this.priLabel18.Size = new System.Drawing.Size(136, 27);
+            this.priLabel18.TabIndex = 44;
+            this.priLabel18.Text = "Skill Bindings";
+            this.priLabel18.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // BindingSkills
+            // 
+            this.BindingSkills.FontSize = Pri.PriComboBoxSize.Small;
+            this.BindingSkills.FormattingEnabled = true;
+            this.BindingSkills.ItemHeight = 19;
+            this.BindingSkills.Location = new System.Drawing.Point(147, 107);
+            this.BindingSkills.Name = "BindingSkills";
+            this.BindingSkills.Size = new System.Drawing.Size(92, 25);
+            this.BindingSkills.TabIndex = 45;
+            this.BindingSkills.UseSelectable = true;
+            // 
+            // BindingSkillsUpdate
+            // 
+            this.BindingSkillsUpdate.Location = new System.Drawing.Point(244, 108);
+            this.BindingSkillsUpdate.Name = "BindingSkillsUpdate";
+            this.BindingSkillsUpdate.Size = new System.Drawing.Size(55, 23);
+            this.BindingSkillsUpdate.TabIndex = 46;
+            this.BindingSkillsUpdate.Text = "Update";
+            this.BindingSkillsUpdate.UseSelectable = true;
+            this.BindingSkillsUpdate.Click += new System.EventHandler(this.BindingSkillsUpdate_Click);
             // 
             // MainWindow
             // 
@@ -1007,6 +1050,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = Pri.Forms.PriFormBorderStyle.FixedSingle;
             this.ClientSize = new System.Drawing.Size(475, 291);
+            this.Controls.Add(this.BindingSkillsUpdate);
+            this.Controls.Add(this.BindingSkills);
+            this.Controls.Add(this.priLabel18);
+            this.Controls.Add(this.priLabel17);
             this.Controls.Add(this.ToggleBAudio);
             this.Controls.Add(this.ToggleBPassthrough);
             this.Controls.Add(this.BindingToggleB);
@@ -1106,6 +1153,10 @@
         private Pri.Controls.PriCheckBox ToggleBPassthrough;
         private Pri.Controls.PriTextBox BindingToggleB;
         private Pri.Controls.PriLabel priLabel16;
+        private Pri.Controls.PriLabel priLabel17;
+        private Pri.Controls.PriLabel priLabel18;
+        private Pri.Controls.PriComboBox BindingSkills;
+        private Pri.Controls.PriButton BindingSkillsUpdate;
     }
 }
 

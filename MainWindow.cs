@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using Nefarius.ViGEm.Client;
 using Nefarius.ViGEm.Client.Targets;
@@ -11,10 +12,6 @@ namespace ControllerEmu {
         private ViGEmClient Client;
         private IXbox360Controller Controller;
 
-        private const short MIN_AXIS = -32768;
-        private const short MAX_AXIS = 32767;
-        private const byte MIN_SLIDER = 0;
-        private const byte MAX_SLIDER = 255;
         private short xPos = 0;
         private short yPos = 0;
 
@@ -25,9 +22,12 @@ namespace ControllerEmu {
             InitializeConfig();
 
             InputHook = new InputHook();
-            InputHook.BindingUpdated += InputHook_BindingUpdated;
+            InputHook.EmuBindingUpdated += InputHook_EmuBindingUpdated;
+            InputHook.SkillBindingsUpdated += InputHook_SkillBindingsUpdated;
             InputHook.StateChanged += InputHook_StateChanged;
             InputHook.KeyPress += InputHook_KeyPress;
+            InputHook.AxisUpdate += InputHook_AxisUpdate;
+            InputHook.AxisReturn += InputHook_AxisReturn;
 
             ToggleController(true);
         }
@@ -54,23 +54,32 @@ namespace ControllerEmu {
             Audio.StopMediaManager();
         }
 
-        private void InputHook_BindingUpdated(object sender, EventArgs e) {
-            Config.Binding.ToggleA = InputHook.Bindings.Find(x => x.Button == Buttons.ToggleA).Key;
-            Config.Binding.ToggleB = InputHook.Bindings.Find(x => x.Button == Buttons.ToggleB).Key;
-            Config.Binding.Up = InputHook.Bindings.Find(x => x.Button == Buttons.Up).Key;
-            Config.Binding.Down = InputHook.Bindings.Find(x => x.Button == Buttons.Down).Key;
-            Config.Binding.Left = InputHook.Bindings.Find(x => x.Button == Buttons.Left).Key;
-            Config.Binding.Right = InputHook.Bindings.Find(x => x.Button == Buttons.Right).Key;
-            Config.Binding.A = InputHook.Bindings.Find(x => x.Button == Buttons.A).Key;
-            Config.Binding.B = InputHook.Bindings.Find(x => x.Button == Buttons.B).Key;
-            Config.Binding.X = InputHook.Bindings.Find(x => x.Button == Buttons.X).Key;
-            Config.Binding.Y = InputHook.Bindings.Find(x => x.Button == Buttons.Y).Key;
-            Config.Binding.L1 = InputHook.Bindings.Find(x => x.Button == Buttons.L1).Key;
-            Config.Binding.L2 = InputHook.Bindings.Find(x => x.Button == Buttons.L2).Key;
-            Config.Binding.R1 = InputHook.Bindings.Find(x => x.Button == Buttons.R1).Key;
-            Config.Binding.R2 = InputHook.Bindings.Find(x => x.Button == Buttons.R2).Key;
-            Config.Binding.Start = InputHook.Bindings.Find(x => x.Button == Buttons.Start).Key;
-            Config.Binding.Back = InputHook.Bindings.Find(x => x.Button == Buttons.Back).Key;
+        private void InputHook_EmuBindingUpdated(object sender, EventArgs e) {
+            Config.Binding.ToggleA = InputHook.EmuBindings.Find(x => x.Button == Buttons.ToggleA).Key;
+            Config.Binding.ToggleB = InputHook.EmuBindings.Find(x => x.Button == Buttons.ToggleB).Key;
+            Config.Binding.Up = InputHook.EmuBindings.Find(x => x.Button == Buttons.Up).Key;
+            Config.Binding.Down = InputHook.EmuBindings.Find(x => x.Button == Buttons.Down).Key;
+            Config.Binding.Left = InputHook.EmuBindings.Find(x => x.Button == Buttons.Left).Key;
+            Config.Binding.Right = InputHook.EmuBindings.Find(x => x.Button == Buttons.Right).Key;
+            Config.Binding.A = InputHook.EmuBindings.Find(x => x.Button == Buttons.A).Key;
+            Config.Binding.B = InputHook.EmuBindings.Find(x => x.Button == Buttons.B).Key;
+            Config.Binding.X = InputHook.EmuBindings.Find(x => x.Button == Buttons.X).Key;
+            Config.Binding.Y = InputHook.EmuBindings.Find(x => x.Button == Buttons.Y).Key;
+            Config.Binding.L1 = InputHook.EmuBindings.Find(x => x.Button == Buttons.L1).Key;
+            Config.Binding.L2 = InputHook.EmuBindings.Find(x => x.Button == Buttons.L2).Key;
+            Config.Binding.R1 = InputHook.EmuBindings.Find(x => x.Button == Buttons.R1).Key;
+            Config.Binding.R2 = InputHook.EmuBindings.Find(x => x.Button == Buttons.R2).Key;
+            Config.Binding.Start = InputHook.EmuBindings.Find(x => x.Button == Buttons.Start).Key;
+            Config.Binding.Back = InputHook.EmuBindings.Find(x => x.Button == Buttons.Back).Key;
+            Config.Save();
+
+            InitializeConfig();
+        }
+        private void InputHook_SkillBindingsUpdated(object sender, EventArgs e) {
+            Config.Binding.SkillBindings = new List<Keys>();
+            foreach(Binding binding in InputHook.SkillBindings) {
+                Config.Binding.SkillBindings.Add(binding.Key);
+            }
             Config.Save();
 
             InitializeConfig();
@@ -86,41 +95,53 @@ namespace ControllerEmu {
             }
         }
 
+        private void InputHook_AxisUpdate(object sender, AxisPosEventArgs e) {
+            int x = e.AxisPos.X < 0 ? Math.Max(InputHook.MIN_AXIS, e.AxisPos.X + (InputHook.MIN_AXIS / 2)) : Math.Min(InputHook.MAX_AXIS, e.AxisPos.X + (InputHook.MAX_AXIS / 2));
+            int y = e.AxisPos.Y < 0 ? Math.Max(InputHook.MIN_AXIS, e.AxisPos.Y + (InputHook.MIN_AXIS / 2)) : Math.Min(InputHook.MAX_AXIS, e.AxisPos.Y + (InputHook.MAX_AXIS / 2));
+
+            Controller.SetAxisValue(Xbox360Axis.LeftThumbY, (short)y);
+            Controller.SetAxisValue(Xbox360Axis.LeftThumbX, (short)x);
+        }
+        private void InputHook_AxisReturn(object sender, EventArgs e) {
+            Controller.SetAxisValue(Xbox360Axis.LeftThumbY, yPos);
+            Controller.SetAxisValue(Xbox360Axis.LeftThumbX, xPos);
+        }
+
         private void InputHook_KeyPress(object sender, KeyPressEventArgs e) {
             switch(e.Binding.Button) {
                 case Buttons.Up:
-                    if(!e.Binding.Pressed && yPos == MAX_AXIS) {
+                    if(!e.Binding.Pressed && yPos == InputHook.MAX_AXIS) {
                         yPos = 0;
                         Controller.SetAxisValue(Xbox360Axis.LeftThumbY, yPos);
                     } else if(e.Binding.Pressed) {
-                        yPos = MAX_AXIS;
+                        yPos = InputHook.MAX_AXIS;
                         Controller.SetAxisValue(Xbox360Axis.LeftThumbY, yPos);
                     }
                     break;
                 case Buttons.Down:
-                    if(!e.Binding.Pressed && yPos == MIN_AXIS) {
+                    if(!e.Binding.Pressed && yPos == InputHook.MIN_AXIS) {
                         yPos = 0;
                         Controller.SetAxisValue(Xbox360Axis.LeftThumbY, yPos);
                     } else if(e.Binding.Pressed) {
-                        yPos = MIN_AXIS;
+                        yPos = InputHook.MIN_AXIS;
                         Controller.SetAxisValue(Xbox360Axis.LeftThumbY, yPos);
                     }
                     break;
                 case Buttons.Left:
-                    if(!e.Binding.Pressed && xPos == MIN_AXIS) {
+                    if(!e.Binding.Pressed && xPos == InputHook.MIN_AXIS) {
                         xPos = 0;
                         Controller.SetAxisValue(Xbox360Axis.LeftThumbX, xPos);
                     } else if(e.Binding.Pressed) {
-                        xPos = MIN_AXIS;
+                        xPos = InputHook.MIN_AXIS;
                         Controller.SetAxisValue(Xbox360Axis.LeftThumbX, xPos);
                     }
                     break;
                 case Buttons.Right:
-                    if(!e.Binding.Pressed && xPos == MAX_AXIS) {
+                    if(!e.Binding.Pressed && xPos == InputHook.MAX_AXIS) {
                         xPos = 0;
                         Controller.SetAxisValue(Xbox360Axis.LeftThumbX, xPos);
                     } else if(e.Binding.Pressed) {
-                        xPos = MAX_AXIS;
+                        xPos = InputHook.MAX_AXIS;
                         Controller.SetAxisValue(Xbox360Axis.LeftThumbX, xPos);
                     }
                     break;
@@ -129,9 +150,9 @@ namespace ControllerEmu {
                 case Buttons.X: Controller.SetButtonState(Xbox360Button.X, e.Binding.Pressed); break;
                 case Buttons.Y: Controller.SetButtonState(Xbox360Button.Y, e.Binding.Pressed); break;
                 case Buttons.L1: Controller.SetButtonState(Xbox360Button.LeftShoulder, e.Binding.Pressed); break;
-                case Buttons.L2: Controller.SetSliderValue(Xbox360Slider.LeftTrigger, e.Binding.Pressed ? MAX_SLIDER : MIN_SLIDER); break;
+                case Buttons.L2: Controller.SetSliderValue(Xbox360Slider.LeftTrigger, e.Binding.Pressed ? InputHook.MAX_SLIDER : InputHook.MIN_SLIDER); break;
                 case Buttons.R1: Controller.SetButtonState(Xbox360Button.RightShoulder, e.Binding.Pressed); break;
-                case Buttons.R2: Controller.SetSliderValue(Xbox360Slider.RightTrigger, e.Binding.Pressed ? MAX_SLIDER : MIN_SLIDER); break;
+                case Buttons.R2: Controller.SetSliderValue(Xbox360Slider.RightTrigger, e.Binding.Pressed ? InputHook.MAX_SLIDER : InputHook.MIN_SLIDER); break;
                 case Buttons.Back: Controller.SetButtonState(Xbox360Button.Back, e.Binding.Pressed); break;
                 case Buttons.Start: Controller.SetButtonState(Xbox360Button.Start, e.Binding.Pressed); break;
             }
@@ -192,6 +213,12 @@ namespace ControllerEmu {
             BindingR2.Text = Config.Binding.R2.ToString();
             BindingStart.Text = Config.Binding.Start.ToString();
             BindingBack.Text = Config.Binding.Back.ToString();
+
+            BindingSkills.Items.Clear();
+            foreach(Keys key in Config.Binding.SkillBindings) {
+                BindingSkills.Items.Add(key.ToString());
+            }
+            BindingSkillsUpdate.Text = "Update";
         }
 
         private void ToggleAPassthrough_CheckedChanged(object sender, EventArgs e) {
@@ -223,82 +250,104 @@ namespace ControllerEmu {
             Config.Save();
         }
 
-        private void UpdateBinding(Buttons button) {
-            if(InputHook.Updating) {
-                Binding binding = InputHook.Bindings.Find(x => x.Updating && x.Button != button);
+        private void UpdateEmuBinding(Buttons button) {
+            if(InputHook.UpdatingEmuBindings) {
+                Binding binding = InputHook.EmuBindings.Find(x => x.Updating && x.Button != button);
                 if(binding != null) {
                     binding.Updating = false;
                     InitializeConfig();
                 }
             }
 
-            InputHook.Updating = true;
-            InputHook.Bindings.Find(x => x.Button == button).Updating = true;
+            InputHook.UpdatingEmuBindings = true;
+            InputHook.EmuBindings.Find(x => x.Button == button).Updating = true;
         }
 
         private void BindingToggleA_Click(object sender, EventArgs e) {
-            UpdateBinding(Buttons.ToggleA);
-            BindingToggleA.Text = "";
+            if(InputHook.UpdatingSkillBindings) { return; }
+            UpdateEmuBinding(Buttons.ToggleA);
+            BindingToggleA.Text = "...";
         }
         private void BindingToggleB_Click(object sender, EventArgs e) {
-            UpdateBinding(Buttons.ToggleB);
-            BindingToggleB.Text = "";
+            if(InputHook.UpdatingSkillBindings) { return; }
+            UpdateEmuBinding(Buttons.ToggleB);
+            BindingToggleB.Text = "...";
         }
         private void BindingUp_Click(object sender, EventArgs e) {
-            UpdateBinding(Buttons.Up);
-            BindingUp.Text = "";
+            if(InputHook.UpdatingSkillBindings) { return; }
+            UpdateEmuBinding(Buttons.Up);
+            BindingUp.Text = "...";
         }
         private void BindingDown_Click(object sender, EventArgs e) {
-            UpdateBinding(Buttons.Down);
-            BindingDown.Text = "";
+            if(InputHook.UpdatingSkillBindings) { return; }
+            UpdateEmuBinding(Buttons.Down);
+            BindingDown.Text = "...";
         }
         private void BindingLeft_Click(object sender, EventArgs e) {
-            UpdateBinding(Buttons.Left);
-            BindingLeft.Text = "";
+            if(InputHook.UpdatingSkillBindings) { return; }
+            UpdateEmuBinding(Buttons.Left);
+            BindingLeft.Text = "...";
         }
         private void BindingRight_Click(object sender, EventArgs e) {
-            UpdateBinding(Buttons.Right);
-            BindingRight.Text = "";
+            if(InputHook.UpdatingSkillBindings) { return; }
+            UpdateEmuBinding(Buttons.Right);
+            BindingRight.Text = "...";
         }
         private void BindingA_Click(object sender, EventArgs e) {
-            UpdateBinding(Buttons.A);
-            BindingA.Text = "";
+            if(InputHook.UpdatingSkillBindings) { return; }
+            UpdateEmuBinding(Buttons.A);
+            BindingA.Text = "...";
         }
         private void BindingB_Click(object sender, EventArgs e) {
-            UpdateBinding(Buttons.B);
-            BindingB.Text = "";
+            if(InputHook.UpdatingSkillBindings) { return; }
+            UpdateEmuBinding(Buttons.B);
+            BindingB.Text = "...";
         }
         private void BindingX_Click(object sender, EventArgs e) {
-            UpdateBinding(Buttons.X);
-            BindingX.Text = "";
+            if(InputHook.UpdatingSkillBindings) { return; }
+            UpdateEmuBinding(Buttons.X);
+            BindingX.Text = "...";
         }
         private void BindingY_Click(object sender, EventArgs e) {
-            UpdateBinding(Buttons.Y);
-            BindingY.Text = "";
+            if(InputHook.UpdatingSkillBindings) { return; }
+            UpdateEmuBinding(Buttons.Y);
+            BindingY.Text = "...";
         }
         private void BindingL1_Click(object sender, EventArgs e) {
-            UpdateBinding(Buttons.L1);
-            BindingL1.Text = "";
+            if(InputHook.UpdatingSkillBindings) { return; }
+            UpdateEmuBinding(Buttons.L1);
+            BindingL1.Text = "...";
         }
         private void BindingL2_Click(object sender, EventArgs e) {
-            UpdateBinding(Buttons.L2);
-            BindingL2.Text = "";
+            if(InputHook.UpdatingSkillBindings) { return; }
+            UpdateEmuBinding(Buttons.L2);
+            BindingL2.Text = "...";
         }
         private void BindingR1_Click(object sender, EventArgs e) {
-            UpdateBinding(Buttons.R1);
-            BindingR1.Text = "";
+            if(InputHook.UpdatingSkillBindings) { return; }
+            UpdateEmuBinding(Buttons.R1);
+            BindingR1.Text = "...";
         }
         private void BindingR2_Click(object sender, EventArgs e) {
-            UpdateBinding(Buttons.R2);
-            BindingR2.Text = "";
+            if(InputHook.UpdatingSkillBindings) { return; }
+            UpdateEmuBinding(Buttons.R2);
+            BindingR2.Text = "...";
         }
         private void BindingStart_Click(object sender, EventArgs e) {
-            UpdateBinding(Buttons.Start);
-            BindingStart.Text = "";
+            if(InputHook.UpdatingSkillBindings) { return; }
+            UpdateEmuBinding(Buttons.Start);
+            BindingStart.Text = "...";
         }
         private void BindingBack_Click(object sender, EventArgs e) {
-            UpdateBinding(Buttons.Back);
-            BindingBack.Text = "";
+            if(InputHook.UpdatingSkillBindings) { return; }
+            UpdateEmuBinding(Buttons.Back);
+            BindingBack.Text = "...";
+        }
+
+        private void BindingSkillsUpdate_Click(object sender, EventArgs e) {
+            if(InputHook.UpdatingEmuBindings || InputHook.UpdatingSkillBindings) { return; }
+            InputHook.UpdatingSkillBindings = true;
+            BindingSkillsUpdate.Text = "...";
         }
     }
 }

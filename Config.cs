@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using Newtonsoft.Json;
@@ -52,6 +53,7 @@ namespace ControllerEmu {
         }
 
         public class BindingOptions {
+            public List<Keys> SkillBindings { get; set; } = new List<Keys>();
             public Keys ToggleA { get; set; } = Keys.None;
             public Keys ToggleB { get; set; } = Keys.None;
             public Keys Up { get; set; } = Keys.W;
