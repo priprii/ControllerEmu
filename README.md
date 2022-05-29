@@ -24,7 +24,8 @@ Feel free to support me with a donation [here](https://streamlabs.com/primpri) i
 There are a number of buttons you can bind to your keys in this window, it works similar to many MMO's: Click a box which either shows 'None' or the current key bound to it, then press the key you wish to bind to that input. By default, the WASD keys are already bound, but you must also bind a Toggle key for ControllerEmu to work.
 - **Toggle A**: Set the primary key that will be used to toggle emulation of controller input.
 - **Toggle B** (optional): Set the secondary key that will be used to toggle emulation of controller input.
-- **Passthrough**: Determines whether the key bound to each Toggle will pass input through to the process.
+- **Passthrough**: Determines whether the key bound to each Toggle will pass input through to any process or if the input should be discarded.
+- **Binding Passthrough**: Additional passthrough option at the bottom of the config with similar behaviour to toggle passthrough, but for controller binded keys. This should be enabled if you're using other applications that listen to these key presses (like an input overlay), it may need to be disabled if the game forces the use of the bound keys for other functions.
 - **Audio**: Determines whether audio notification will be played when emulation is enabled/disabled for each Toggle key pressed.
 - - The volume of the enabled/disabled audio can be adjusted using the sliders.
 - - You can replace the 'toggleon.mp3' and 'toggleoff.mp3' files if you have other sounds you want to use for notification.
@@ -44,4 +45,3 @@ This provides capability of using a skill in the direction of the mouse cursor (
 - - This results in input prompts displaying as controller buttons instead of keyboard keys, you can fix this by unassigning all of the bindings in Gamepad -> Control. You can unassign them by setting them to the same button as another binding.
 - - - Assigning button bindings requires a controller, but you can instead temporarily assign a key to a button in ControllerEmu (Like assign 'A' to 'F2') and then use this key to assign the button bindings.
 - Only Toggle & WASD keys need to be assigned in ControllerEmu, the rest of the button bindings are provided just in case you find some use for them.
-- There is one more option only available directly from Config.ini called 'OverridePassthrough' which will allow keys to pass through to the process even when controller is being emulated. This is useful in case you're using other applications that need to read these keys such as an input overlay. By default this behaviour is disabled.
