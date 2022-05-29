@@ -39,11 +39,14 @@ This provides capability of using a skill in the direction of the mouse cursor (
 - - The pressed key will be added to the list, repeat the process for additional keys.
 - - You can remove a key from the list by attempting to assign it a second time.
 
+# In-game Options
+- Disable 'Auto-target targeted skills' under Gamepad -> Additional Features if you want targeting behaviour that is more similar to playing without controller.
+- Disable 'Virtual Keyboard Auto Display' under Gamepad -> Additional Features to prevent the virtual keyboard from popping up on input fields.
+- 'Use Gamepad' under Gamepad -> Control must be enabled in order for ControllerEmu to function.
+- - With this enabled, input prompts will display controller buttons instead of keyboard keys, you can fix this by unassigning all of the controller bindings which can be done by assigning the same button to multiple bindings.
+- - - Note: Assigning button bindings requires a controller, but you can instead temporarily assign a key to a button in ControllerEmu (Like assign 'A' to 'F2') and then use this key to assign the button bindings.
+
 # Notes
 
 - I'd recommend setting 'Toggle A' to something like 'F1' with 'Passthrough' disabled, and 'Toggle B' set to 'Enter' with 'Passthrough' enabled. This will allow you to enable emulation with 'F1', and then toggle emulation whenever you use the in-game chat.
 - You can unbind a key in ControllerEmu by clicking the box for it then pressing the 'Escape' key.
-- The 'Use Gamepad' option in Lost Ark settings must be enabled for ControllerEmu to work.
-- - This results in input prompts displaying as controller buttons instead of keyboard keys, you can fix this by unassigning all of the bindings in Gamepad -> Control. You can unassign them by setting them to the same button as another binding.
-- - - Assigning button bindings requires a controller, but you can instead temporarily assign a key to a button in ControllerEmu (Like assign 'A' to 'F2') and then use this key to assign the button bindings.
-- Only Toggle & WASD keys need to be assigned in ControllerEmu, the rest of the button bindings are provided just in case you find some use for them.
